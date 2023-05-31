@@ -12,41 +12,45 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto, UpdateUserDto } from './user.dto';
+import { User, CreateUserDto, UpdateUserDto } from './user.dto';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  getAllUsers() {
-    return this.userService.getAllUsers();
+  async getAllUsers(): Promise<User[]> {
+    return await this.userService.getAllUsers();
   }
 
   @Get(':id')
-  getUserById(@Param('id', new ParseUUIDPipe()) id: string): string {
-    return this.userService.getUserByID(id);
+  async getUserById(
+    @Param('id', new ParseUUIDPipe()) id: string,
+  ): Promise<User> {
+    return await this.userService.getUserByID(id);
   }
 
   @Post()
   @UsePipes(new ValidationPipe())
-  createUser(@Body() createUserDto: CreateUserDto) {
-    return this.userService.createUser(createUserDto);
+  async createUser(@Body() createUserDto: CreateUserDto): Promise<User> {
+    return await this.userService.createUser(createUserDto);
   }
 
   @Put(':id')
   @UsePipes(new ValidationPipe())
-  update(
+  async update(
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() updateUserDto: UpdateUserDto,
-  ) {
+  ): Promise<User> {
     const user = this.userService.update(id, updateUserDto);
-    return user;
+    return await user;
   }
 
   @HttpCode(204)
   @Delete(':id')
-  deleteUser(@Param('id', new ParseUUIDPipe()) id: string) {
-    return this.userService.deleteUser(id);
+  async deleteUser(
+    @Param('id', new ParseUUIDPipe()) id: string,
+  ): Promise<void> {
+    return await this.userService.deleteUser(id);
   }
 }

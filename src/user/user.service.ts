@@ -3,18 +3,19 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateUserDto, UpdateUserDto } from './user.dto';
+import { User, CreateUserDto, UpdateUserDto } from './user.dto';
+import { instanceToPlain, plainToClass } from 'class-transformer';
 import { randomUUID } from 'crypto';
 
 @Injectable()
 export class UserService {
   private users = [];
 
-  getAllUsers() {
+  async getAllUsers(): Promise<User[]> {
     return this.users;
   }
 
-  getUserByID(id: string) {
+  async getUserByID(id: string): Promise<User> {
     const user = this.users.find((user) => user.id === id);
 
     if (!user)
@@ -22,25 +23,25 @@ export class UserService {
         message: 'User with this id is not found',
       });
 
-    return user;
+    return await user;
   }
 
-  createUser(createUserDto: CreateUserDto) {
+  async createUser(createUserDto: CreateUserDto): Promise<User> {
     const date = Date.now();
 
-    const newUser = {
+    const newUser = plainToClass(User, {
       id: randomUUID(),
       ...createUserDto,
       version: 1,
       createdAt: date,
       updatedAt: date,
-    };
+    });
 
     this.users.push(newUser);
-    return newUser;
+    return instanceToPlain(newUser) as Promise<User>;
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     const user = this.users.find((user) => user.id === id);
 
     if (!user) throw new NotFoundException();
@@ -51,12 +52,13 @@ export class UserService {
       });
     }
 
-    user.password = updateUserDto?.newPassword;
+    user.password = updateUserDto.newPassword;
+    user.updatedAt = Date.now();
     user.version += 1;
-    return user;
+    return instanceToPlain(user) as Promise<User>;
   }
 
-  deleteUser(id: string) {
+  async deleteUser(id: string): Promise<void> {
     const index: number = this.users.findIndex((user) => user.id === id);
 
     if (index < 0)

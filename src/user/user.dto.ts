@@ -1,31 +1,32 @@
-import { Exclude } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 import { IsNotEmpty, IsString } from 'class-validator';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'user' })
 export class User {
   @PrimaryGeneratedColumn('uuid')
+  @Expose()
   id: string;
 
   @Column()
+  @Expose()
   login: string;
 
   @Column()
-  @Exclude()
+  @Exclude({ toPlainOnly: true })
   password: string;
 
   @Column()
+  @Expose()
   version: number;
 
   @Column()
+  @Expose()
   createdAt: number;
 
   @Column()
+  @Expose()
   updatedAt: number;
-
-  constructor(partial: Partial<User>) {
-    Object.assign(this, partial);
-  }
 }
 
 export class CreateUserDto {
