@@ -12,6 +12,11 @@
 git clone {repository URL}
 ```
 
+## Rename .env.example file to .env
+```
+ .env.example  =>  .env
+```
+
 ## Installing NPM modules
 
 ```
