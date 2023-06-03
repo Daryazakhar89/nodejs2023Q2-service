@@ -19,12 +19,12 @@ export class ArtistController {
   constructor(private readonly artistService: ArtistService) {}
 
   @Get()
-  async getAllUsers(): Promise<Artist[]> {
+  async getAllArtists(): Promise<Artist[]> {
     return await this.artistService.getAllArtists();
   }
 
   @Get(':id')
-  async getUserById(
+  async getArtistByID(
     @Param('id', new ParseUUIDPipe()) id: string,
   ): Promise<Artist> {
     return await this.artistService.getArtistByID(id);
@@ -44,13 +44,13 @@ export class ArtistController {
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() updateArtistDto: UpdateArtistDto,
   ): Promise<Artist> {
-    const user = this.artistService.update(id, updateArtistDto);
-    return await user;
+    const artist = this.artistService.update(id, updateArtistDto);
+    return await artist;
   }
 
   @HttpCode(204)
   @Delete(':id')
-  async deleteUser(
+  async deleteArtist(
     @Param('id', new ParseUUIDPipe()) id: string,
   ): Promise<void> {
     return await this.artistService.deleteArtist(id);
