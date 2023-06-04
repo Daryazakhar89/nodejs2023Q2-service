@@ -1,57 +1,32 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateTrackDto, Track, UpdateTrackDto } from './track.dto';
-import { randomUUID } from 'crypto';
+import { DataBase } from 'src/db/DataBase';
 
 @Injectable()
 export class TrackService {
-  private tracks = [];
+  db: DataBase;
 
-  async getAllTracks(): Promise<Track[]> {
-    return this.tracks;
+  constructor() {
+    this.db = DataBase.getInstance();
   }
 
-  async getTrackByID(id: string): Promise<Track> {
-    const track = this.tracks.find((user) => user.id === id);
-
-    if (!track)
-      throw new NotFoundException({
-        message: 'Track with this id is not found',
-      });
-
-    return await track;
+  getAllTracks(): Promise<Track[]> {
+    return this.db.getTracks();
   }
 
-  async createTrack(createTrackDto: CreateTrackDto): Promise<Track> {
-    const newTrack = {
-      id: randomUUID(),
-      ...createTrackDto,
-    };
-
-    this.tracks.push(newTrack);
-    return newTrack;
+  getTrackByID(id: string): Promise<Track> {
+    return this.db.getTrackByID(id);
   }
 
-  async update(id: string, updateTrackDto: UpdateTrackDto): Promise<Track> {
-    const track = this.tracks.find((track) => track.id === id);
-
-    if (!track) throw new NotFoundException();
-
-    track.name = updateTrackDto.name;
-    track.artistId = updateTrackDto.artistId;
-    track.albumId = updateTrackDto.albumId;
-    track.duration = updateTrackDto.duration;
-
-    return track;
+  createTrack(createTrackDto: CreateTrackDto): Promise<Track> {
+    return this.db.createTrack(createTrackDto);
   }
 
-  async deleteTrack(id: string): Promise<void> {
-    const index: number = this.tracks.findIndex((track) => track.id === id);
+  update(id: string, updateTrackDto: UpdateTrackDto): Promise<Track> {
+    return this.db.updateTrack(id, updateTrackDto);
+  }
 
-    if (index < 0)
-      throw new NotFoundException({
-        message: 'Track with this id is not found',
-      });
-
-    this.tracks.splice(index, 1);
+  deleteTrack(id: string): Promise<void> {
+    return this.db.deleteTrack(id);
   }
 }

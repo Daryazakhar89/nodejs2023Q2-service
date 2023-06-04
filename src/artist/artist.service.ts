@@ -1,55 +1,32 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Artist, CreateArtistDto, UpdateArtistDto } from './artist.dto';
-import { randomUUID } from 'crypto';
+import { DataBase } from 'src/db/DataBase';
 
 @Injectable()
 export class ArtistService {
-  private artists = [];
+  private db: DataBase;
 
-  async getAllArtists(): Promise<Artist[]> {
-    return this.artists;
+  constructor() {
+    this.db = DataBase.getInstance();
   }
 
-  async getArtistByID(id: string): Promise<Artist> {
-    const artist = this.artists.find((user) => user.id === id);
-
-    if (!artist)
-      throw new NotFoundException({
-        message: 'Artist with this id is not found',
-      });
-
-    return await artist;
+  getAllArtists(): Promise<Artist[]> {
+    return this.db.getArtists();
   }
 
-  async createArtist(createArtistDto: CreateArtistDto): Promise<Artist> {
-    const newArtist = {
-      id: randomUUID(),
-      ...createArtistDto,
-    };
-
-    this.artists.push(newArtist);
-    return newArtist;
+  getArtistByID(id: string): Promise<Artist> {
+    return this.db.getArtistByID(id);
   }
 
-  async update(id: string, updateArtistDto: UpdateArtistDto): Promise<Artist> {
-    const artist = this.artists.find((artist) => artist.id === id);
-
-    if (!artist) throw new NotFoundException();
-
-    artist.name = updateArtistDto.name;
-    artist.grammy = updateArtistDto.grammy;
-
-    return artist;
+  createArtist(createArtistDto: CreateArtistDto): Promise<Artist> {
+    return this.db.createArtist(createArtistDto);
   }
 
-  async deleteArtist(id: string): Promise<void> {
-    const index: number = this.artists.findIndex((artist) => artist.id === id);
+  update(id: string, updateArtistDto: UpdateArtistDto): Promise<Artist> {
+    return this.db.updateArtist(id, updateArtistDto);
+  }
 
-    if (index < 0)
-      throw new NotFoundException({
-        message: 'Artist with this id is not found',
-      });
-
-    this.artists.splice(index, 1);
+  deleteArtist(id: string): Promise<void> {
+    return this.db.deleteArtist(id);
   }
 }
