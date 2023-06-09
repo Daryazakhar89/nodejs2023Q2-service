@@ -11,7 +11,10 @@
 ```
 git clone {repository URL}
 ```
-
+## Switch to dev2 branch
+```
+git checkout dev2
+```
 ## Rename .env.example file to .env
 ```
  .env.example  =>  .env
@@ -20,15 +23,20 @@ git clone {repository URL}
 ## Installing NPM modules
 
 ```
-npm install
+npm install --legacy-peer-deps
 ```
-
-## Running application
-
+## Running application without docker
 ```
-npm start
+npm run start:dev
 ```
-
+## Build images and run them in containers (with docker)
+```
+npm run docker:compose
+```
+## Scan images for security vulnerabilities
+```
+npm run docker:scan
+```
 After starting the app on port (4000 as default) you can open
 in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
 For more information about OpenAPI/Swagger please visit https://swagger.io/.
