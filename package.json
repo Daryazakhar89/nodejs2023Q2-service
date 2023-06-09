@@ -18,7 +18,10 @@
     "test:auth": "cross-env TEST_MODE=auth jest --config ./test/jest-e2e.json",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
-    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand"
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "docker:scan": "docker scout cves daryazakhar89/app && docker scout cves daryazakhar89/postgres-image",
+    "docker:build": "docker build -t daryazakhar89/app . && docker build -t daryazakhar89/postgres-image .",
+    "docker:compose":"docker compose up --build"
   },
   "dependencies": {
     "@nestjs/common": "^9.4.2",
@@ -37,7 +40,7 @@
     "swagger-ui-express": "^4.6.3",
     "typeorm": "^0.3.16",
     "uuid": "^8.3.2",
-    "yaml": "^2.3.1"
+    "yaml": "^2.3.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.5.0",
