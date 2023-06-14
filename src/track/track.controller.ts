@@ -12,22 +12,21 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { TrackService } from './track.service';
-import { CreateTrackDto, Track, UpdateTrackDto } from './track.dto';
+import { CreateTrackDto, UpdateTrackDto } from './track.dto';
+import { Track } from './track.entity';
 
 @Controller('track')
 export class TrackController {
   constructor(private readonly trackService: TrackService) {}
 
   @Get()
-  async getAllTracks(): Promise<Track[]> {
-    return await this.trackService.getAllTracks();
+  async findAll(): Promise<Track[]> {
+    return await this.trackService.findAll();
   }
 
   @Get(':id')
-  async getTrackByID(
-    @Param('id', new ParseUUIDPipe()) id: string,
-  ): Promise<Track> {
-    return await this.trackService.getTrackByID(id);
+  async findOne(@Param('id', new ParseUUIDPipe()) id: string): Promise<Track> {
+    return await this.trackService.findOne(id);
   }
 
   @Post()
@@ -38,11 +37,11 @@ export class TrackController {
 
   @Put(':id')
   @UsePipes(new ValidationPipe())
-  async update(
+  async updateTrack(
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() updateTrackDto: UpdateTrackDto,
   ): Promise<Track> {
-    const track = this.trackService.update(id, updateTrackDto);
+    const track = this.trackService.updateTrack(id, updateTrackDto);
     return await track;
   }
 
