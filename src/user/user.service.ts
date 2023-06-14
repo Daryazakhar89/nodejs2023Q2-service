@@ -7,7 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { User } from '../user/user.entity';
-import { classToPlain, instanceToPlain, plainToClass } from 'class-transformer';
+import { instanceToPlain } from 'class-transformer';
 import { randomUUID } from 'crypto';
 
 @Injectable()
@@ -46,7 +46,7 @@ export class UserService {
     return instanceToPlain(user) as User;
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+  async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.usersRepository.findOneBy({ id });
 
     if (!user) {
@@ -70,7 +70,7 @@ export class UserService {
     return instanceToPlain(user) as User;
   }
 
-  async remove(id: string): Promise<void> {
+  async deleteUser(id: string): Promise<void> {
     const deleteResult = await this.usersRepository.delete(id);
     if (deleteResult.affected === 0) {
       throw new NotFoundException({

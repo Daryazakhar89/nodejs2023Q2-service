@@ -37,17 +37,19 @@ export class UserController {
 
   @Put(':id')
   @UsePipes(new ValidationPipe())
-  async update(
+  async updateUser(
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() updateUserDto: UpdateUserDto,
   ): Promise<User> {
-    const user = this.userService.update(id, updateUserDto);
+    const user = this.userService.updateUser(id, updateUserDto);
     return await user;
   }
 
   @HttpCode(204)
   @Delete(':id')
-  async remove(@Param('id', new ParseUUIDPipe()) id: string): Promise<void> {
-    return await this.userService.remove(id);
+  async deleteUser(
+    @Param('id', new ParseUUIDPipe()) id: string,
+  ): Promise<void> {
+    return await this.userService.deleteUser(id);
   }
 }
