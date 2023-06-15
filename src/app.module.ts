@@ -9,6 +9,10 @@ import { FavoritesModule } from './favorites/favorites.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { User } from './user/user.entity';
+import { Artist } from './artist/artist.entity';
+import { Track } from './track/track.entity';
+import { Album } from './album/album.entity';
+import { Favorites } from './favorites/favorites.entity';
 
 @Module({
   imports: [
@@ -27,7 +31,7 @@ import { User } from './user/user.entity';
         username: configService.get('POSTGRES_USER'),
         password: configService.get('POSTGRES_PASSWORD'),
         database: configService.get('POSTGRES_DB'),
-        entities: [User],
+        entities: [User, Artist, Track, Album, Favorites],
         synchronize: true,
       }),
       inject: [ConfigService],
