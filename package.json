@@ -21,7 +21,10 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "docker:scan": "docker scout cves daryazakhar89/app && docker scout cves daryazakhar89/postgres-image",
     "docker:build": "docker build -t daryazakhar89/app . && docker build -t daryazakhar89/postgres-image .",
-    "docker:compose": "docker compose up --build"
+    "docker:compose": "docker compose up --build",
+    "typeorm": "typeorm-ts-node-esm",
+    "migrations:generate": "npm run build && npm run typeorm migration:generate  -- -d ./src/db/dataSource.ts ./src/db/migrations/newMigration"
+
   },
   "dependencies": {
     "@nestjs/common": "^9.4.2",
