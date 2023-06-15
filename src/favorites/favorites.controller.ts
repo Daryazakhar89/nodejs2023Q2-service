@@ -8,15 +8,15 @@ import {
   Post,
 } from '@nestjs/common';
 import { FavoritesService } from './favorites.service';
-import { Favorites } from './favorites.dto';
+import { FavoritesResponse } from './favorites.entity';
 
 @Controller('favs')
 export class FavoritesController {
   constructor(private readonly favoritesService: FavoritesService) {}
 
   @Get()
-  async getAllFavorites(): Promise<Favorites> {
-    return await this.favoritesService.getAllFavorites();
+  async findAll(): Promise<FavoritesResponse> {
+    return await this.favoritesService.findAll();
   }
 
   @Post('track/:id')
