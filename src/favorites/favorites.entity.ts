@@ -21,7 +21,6 @@ export class Favorites {
   tracks: string[];
 }
 
-@Entity({ name: 'favoritesResponse' })
 export class FavoritesResponse {
   artists: Artist[];
   albums: Album[];
