@@ -12,22 +12,21 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { AlbumService } from './album.service';
-import { Album, CreateAlbumDto, UpdateAlbumDto } from './album.dto';
+import { CreateAlbumDto, UpdateAlbumDto } from './album.dto';
+import { Album } from './album.entity';
 
 @Controller('album')
 export class AlbumController {
   constructor(private readonly albumService: AlbumService) {}
 
   @Get()
-  async getAllAlbums(): Promise<Album[]> {
-    return await this.albumService.getAllAlbums();
+  async findAll(): Promise<Album[]> {
+    return await this.albumService.findAll();
   }
 
   @Get(':id')
-  async getAlbumByID(
-    @Param('id', new ParseUUIDPipe()) id: string,
-  ): Promise<Album> {
-    return await this.albumService.getAlbumByID(id);
+  async findOne(@Param('id', new ParseUUIDPipe()) id: string): Promise<Album> {
+    return await this.albumService.findOne(id);
   }
 
   @Post()
