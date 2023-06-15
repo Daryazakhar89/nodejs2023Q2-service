@@ -5,16 +5,15 @@ import { randomUUID } from 'crypto';
 import { instanceToPlain, plainToClass } from 'class-transformer';
 import { CreateTrackDto, UpdateTrackDto } from './track.dto';
 import { Track } from './track.entity';
-// import { Favorites } from 'src/favorites/favorites.dto';
+import { FavoritesService } from 'src/favorites/favorites.service';
 
 @Injectable()
 export class TrackService {
   constructor(
     @InjectRepository(Track)
     private trackRepository: Repository<Track>,
-  ) // @InjectRepository(Favorites)
-  // private favoritesRepository: Repository<Favorites>,
-  {}
+    private readonly favoritesService: FavoritesService,
+  ) {}
 
   findAll(): Promise<Track[]> {
     return this.trackRepository.find();
@@ -36,8 +35,6 @@ export class TrackService {
     const newTrack = plainToClass(Track, {
       id: randomUUID(),
       ...createTrackDto,
-      artistId: createTrackDto.artistId ?? null,
-      albumId: createTrackDto.albumId ?? null,
     });
 
     const track = this.trackRepository.create(newTrack);
@@ -67,17 +64,18 @@ export class TrackService {
   }
 
   async deleteTrack(id: string): Promise<void> {
-    const track = await this.trackRepository.delete(id);
-    if (track.affected === 0) {
+    const track = await this.trackRepository.findOneBy({ id });
+
+    if (!track) {
       throw new NotFoundException({
         message: 'Track with this id is not found',
       });
     }
+    await this.trackRepository.delete(id);
 
-    // this.favoritesRepository = this.favoritesRepository.delete(
-    //   (track) => {
-    //     return track.id !== id;
-    //   },
-    // );
+    const favorites = await this.favoritesService.getFavorites();
+    if (favorites.tracks.includes(id)) {
+      await this.favoritesService.deleteTrackFromFavorites(id);
+    }
   }
 }
