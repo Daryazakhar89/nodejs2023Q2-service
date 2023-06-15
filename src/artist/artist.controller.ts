@@ -12,22 +12,21 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { ArtistService } from './artist.service';
-import { Artist, CreateArtistDto, UpdateArtistDto } from './artist.dto';
+import { CreateArtistDto, UpdateArtistDto } from './artist.dto';
+import { Artist } from './artist.entity';
 
 @Controller('artist')
 export class ArtistController {
   constructor(private readonly artistService: ArtistService) {}
 
   @Get()
-  async getAllArtists(): Promise<Artist[]> {
-    return await this.artistService.getAllArtists();
+  async findAll(): Promise<Artist[]> {
+    return await this.artistService.findAll();
   }
 
   @Get(':id')
-  async getArtistByID(
-    @Param('id', new ParseUUIDPipe()) id: string,
-  ): Promise<Artist> {
-    return await this.artistService.getArtistByID(id);
+  async findOne(@Param('id', new ParseUUIDPipe()) id: string): Promise<Artist> {
+    return await this.artistService.findOne(id);
   }
 
   @Post()
@@ -40,11 +39,11 @@ export class ArtistController {
 
   @Put(':id')
   @UsePipes(new ValidationPipe())
-  async update(
+  async updateArtist(
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() updateArtistDto: UpdateArtistDto,
   ): Promise<Artist> {
-    const artist = this.artistService.update(id, updateArtistDto);
+    const artist = this.artistService.updateArtist(id, updateArtistDto);
     return await artist;
   }
 
