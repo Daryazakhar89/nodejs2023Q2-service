@@ -5,7 +5,7 @@ import { randomUUID } from 'crypto';
 import { instanceToPlain, plainToClass } from 'class-transformer';
 import { CreateTrackDto, UpdateTrackDto } from './track.dto';
 import { Track } from './track.entity';
-import { FavoritesService } from 'src/favorites/favorites.service';
+import { FavoritesService } from '../favorites/favorites.service';
 
 @Injectable()
 export class TrackService {
