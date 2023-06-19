@@ -4,6 +4,7 @@
 
 * Git - [Download & Install Git](https://git-scm.com/downloads).
 * Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
+* Docker - [Download & install Docker](https://www.docker.com/) and run it
 
 ## Downloading
 
@@ -70,7 +71,7 @@ npm run test -- <path to suite>
 ```
 npm run docker:test
 ```
-
+### To test creating tables and adding records to tables in pgAdmin4, DBeaver or any tool use the port POSTGRES_EXTERNAL_PORT=5444
 ### Auto-fix and format
 
 ```
