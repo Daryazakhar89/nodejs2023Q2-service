@@ -1,7 +1,7 @@
 import { Exclude, Expose } from 'class-transformer';
-import { Album } from 'src/album/album.entity';
-import { Artist } from 'src/artist/artist.entity';
-import { Track } from 'src/track/track.entity';
+import { Album } from '../album/album.entity';
+import { Artist } from '../artist/artist.entity';
+import { Track } from '../track/track.entity';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'favorites' })

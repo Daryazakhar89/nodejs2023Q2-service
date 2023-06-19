@@ -1,5 +1,5 @@
 import { Expose } from 'class-transformer';
-import { Artist } from 'src/artist/artist.entity';
+import { Artist } from '../artist/artist.entity';
 import {
   Column,
   Entity,

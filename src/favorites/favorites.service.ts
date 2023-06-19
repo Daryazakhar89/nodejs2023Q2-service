@@ -1,11 +1,11 @@
 import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
+import { randomUUID } from 'crypto';
 import { Favorites, FavoritesResponse } from './favorites.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
-import { Track } from 'src/track/track.entity';
-import { Album } from 'src/album/album.entity';
-import { Artist } from 'src/artist/artist.entity';
-import { randomUUID } from 'crypto';
+import { Track } from '../track/track.entity';
+import { Album } from '../album/album.entity';
+import { Artist } from '../artist/artist.entity';
 
 @Injectable()
 export class FavoritesService {

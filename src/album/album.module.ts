@@ -3,10 +3,10 @@ import { AlbumController } from './album.controller';
 import { AlbumService } from './album.service';
 import { Album } from './album.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Track } from 'src/track/track.entity';
-import { Favorites } from 'src/favorites/favorites.entity';
-import { FavoritesService } from 'src/favorites/favorites.service';
-import { Artist } from 'src/artist/artist.entity';
+import { Track } from '../track/track.entity';
+import { Favorites } from '../favorites/favorites.entity';
+import { FavoritesService } from '../favorites/favorites.service';
+import { Artist } from '../artist/artist.entity';
 
 @Module({
   imports: [

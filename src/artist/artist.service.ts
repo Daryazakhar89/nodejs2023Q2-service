@@ -5,9 +5,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { randomUUID } from 'crypto';
 import { instanceToPlain, plainToClass } from 'class-transformer';
-import { Track } from 'src/track/track.entity';
-import { Album } from 'src/album/album.entity';
-import { FavoritesService } from 'src/favorites/favorites.service';
+import { Track } from '../track/track.entity';
+import { Album } from '../album/album.entity';
+import { FavoritesService } from '../favorites/favorites.service';
 
 @Injectable()
 export class ArtistService {
