@@ -1,5 +1,4 @@
 node_modules
-dist
 
 .gitignore
 .dockerignore
@@ -7,9 +6,5 @@ dist
 .idea
 .git
 
-.env
 .env.example
 *.md
-
-Dockerfile
-docker-compose.yml

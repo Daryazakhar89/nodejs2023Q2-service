@@ -14,3 +14,7 @@ COPY . .
 
 CMD [ "npm", "run", "start" ]
 
+EXPOSE 4000
+
+ENTRYPOINT ./docker-entrypoint.sh
+
