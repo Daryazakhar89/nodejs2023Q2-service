@@ -1,0 +1,10 @@
+node_modules
+
+.gitignore
+.dockerignore
+
+.idea
+.git
+
+.env.example
+*.md
