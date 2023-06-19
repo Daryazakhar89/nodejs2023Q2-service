@@ -12,9 +12,4 @@ RUN apk --no-cache upgrade \
 
 COPY . .
 
-CMD [ "npm", "run", "start" ]
-
-EXPOSE 4000
-
-ENTRYPOINT ./docker-entrypoint.sh
-
+ENTRYPOINT npm ci && npm run typeorm migration:run  -- -d ./src/db/dataSource.ts && npm run start:dev

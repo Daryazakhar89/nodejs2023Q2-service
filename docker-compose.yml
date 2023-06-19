@@ -24,7 +24,7 @@ services:
     container_name: db
     build: ./database
     ports:
-      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+      - ${POSTGRES_EXTERNAL_PORT}:${POSTGRES_PORT}
     volumes:
       - ./database:/var/lib/postgresql/data 777
     restart: always
