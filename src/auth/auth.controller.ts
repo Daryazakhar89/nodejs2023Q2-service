@@ -2,6 +2,7 @@ import { Controller, HttpCode, Post, Body } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignUpUserDto } from './dto/auth.dto';
 import { Public } from '../libs/decorators/Public';
+import { RefreshTokenDTO } from './dto/refreshToken.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -13,20 +14,22 @@ export class AuthController {
   signUp(@Body() userDto: SignUpUserDto): Promise<object> {
     return this.authService.signUp(userDto);
   }
+
   @Public()
   @Post('login')
   login(
     @Body()
     userDto: SignUpUserDto,
-  ): Promise<{ accessToken: string }> {
+  ): Promise<{ accessToken: string; refreshToken: string }> {
     return this.authService.login(userDto);
   }
 
-  // @Post('refresh')
-  // refresh(
-  //   @Body()
-  //   userDto: SignUpUserDto,
-  // ): Promise<{ accessToken: string }> {
-  //   return this.authService.refresh(userDto);
-  // }
+  @Public()
+  @Post('refresh')
+  refresh(
+    @Body()
+    refreshedToken: RefreshTokenDTO,
+  ) {
+    return this.authService.refresh(refreshedToken);
+  }
 }

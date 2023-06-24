@@ -22,7 +22,7 @@
     "docker:scan": "docker scout cves daryazakhar89/app && docker scout cves daryazakhar89/postgres-image",
     "docker:build": "docker build -t daryazakhar89/app . && docker build -t daryazakhar89/postgres-image .",
     "docker:compose": "docker compose up --build",
-    "docker:test": "docker exec app npm run test",
+    "docker:test": "docker exec app npm run test:auth",
     "typeorm": "typeorm-ts-node-esm",
     "migrations:generate": "npm run typeorm migration:generate  -- -d ./src/db/dataSource.ts ./src/db/migrations/newMigration",
     "migrations:run": "npm run typeorm migration:run  -- -d ./src/db/dataSource.ts"

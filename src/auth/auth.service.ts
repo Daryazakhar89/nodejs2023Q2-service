@@ -11,6 +11,7 @@ import { User } from '../user/user.entity';
 import { SignUpUserDto } from './dto/auth.dto';
 import { JwtService } from '@nestjs/jwt';
 import config from 'config';
+import { RefreshTokenDTO } from './dto/refreshToken.dto';
 
 @Injectable()
 export class AuthService {
@@ -36,7 +37,9 @@ export class AuthService {
     };
   }
 
-  async login(userDto: SignUpUserDto): Promise<{ accessToken: string }> {
+  async login(
+    userDto: SignUpUserDto,
+  ): Promise<{ accessToken: string; refreshToken: string }> {
     const user = await this.usersRepository.findOneBy({
       login: userDto.login,
     });
@@ -56,15 +59,53 @@ export class AuthService {
     await bcrypt.compare(userDto.password, user.password);
 
     const payload = { id: user.id, login: user.login };
+
     const accessToken = await this.jwtService.signAsync(payload, {
       secret: config.JWT_SECRET_KEY,
       expiresIn: config.TOKEN_EXPIRE_TIME,
     });
 
+    const refreshToken = await this.jwtService.signAsync(payload, {
+      secret: config.JWT_SECRET_REFRESH_KEY,
+      expiresIn: config.TOKEN_REFRESH_EXPIRE_TIME,
+    });
+
     return {
       accessToken,
+      refreshToken,
     };
   }
 
-  // async refresh() {}
+  async refresh(refreshedToken: RefreshTokenDTO) {
+    try {
+      const tokenData = await this.jwtService.verifyAsync(
+        refreshedToken.refreshToken,
+        {
+          secret: config.JWT_SECRET_REFRESH_KEY,
+        },
+      );
+
+      const payload = {
+        id: tokenData.id,
+        login: tokenData.login,
+      };
+
+      const accessToken = await this.jwtService.signAsync(payload, {
+        secret: config.JWT_SECRET_KEY,
+        expiresIn: config.TOKEN_EXPIRE_TIME,
+      });
+
+      const refreshToken = await this.jwtService.signAsync(payload, {
+        secret: config.JWT_SECRET_REFRESH_KEY,
+        expiresIn: config.TOKEN_REFRESH_EXPIRE_TIME,
+      });
+
+      return {
+        accessToken,
+        refreshToken,
+      };
+    } catch (err) {
+      throw new ForbiddenException('Invalid token');
+    }
+  }
 }
