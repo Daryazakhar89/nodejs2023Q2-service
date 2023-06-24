@@ -9,6 +9,7 @@ import { FavoritesModule } from './favorites/favorites.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { databaseConfig } from './db/databaseConfig';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { databaseConfig } from './db/databaseConfig';
     FavoritesModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({ ...databaseConfig }),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
