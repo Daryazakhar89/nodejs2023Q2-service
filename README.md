@@ -15,7 +15,7 @@ git clone {repository URL}
 ## Switch to dev2 branch
 
 ```
-git checkout dev2
+git checkout dev3
 ```
 
 ## Rename .env.example file to .env
@@ -56,17 +56,12 @@ For more information about OpenAPI/Swagger please visit https://swagger.io/.
 
 After application running open new terminal and enter:
 
-To run all tests without authorization
+To run all tests with authorization
 
 ```
-npm run test
+npm run test:auth
 ```
 
-To run only one of all test suites
-
-```
-npm run test -- <path to suite>
-```
 ## Testing application with docker
 ```
 npm run docker:test
