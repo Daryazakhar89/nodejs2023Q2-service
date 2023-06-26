@@ -11,6 +11,7 @@ import { FavoritesModule } from './favorites/favorites.module';
 import { databaseConfig } from './db/databaseConfig';
 import { AuthModule } from './auth/auth.module';
 import { LoggerMiddleware } from './logger/logger.middleware';
+import { MyLogger } from './logger/logger.servise';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { LoggerMiddleware } from './logger/logger.middleware';
     FavoritesModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({ ...databaseConfig }),
+    MyLogger,
     AuthModule,
   ],
   controllers: [AppController],

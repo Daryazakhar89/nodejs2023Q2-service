@@ -5,11 +5,14 @@ import config from '../config';
 import { serve, setup } from 'swagger-ui-express';
 import { readFileSync } from 'fs';
 import * as YAML from 'yaml';
+import { MyLogger } from './logger/logger.servise';
 
 const { PORT } = config;
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: new MyLogger(),
+  });
   app.useGlobalPipes(new ValidationPipe());
 
   const file = readFileSync('doc/api.yaml', 'utf8');
